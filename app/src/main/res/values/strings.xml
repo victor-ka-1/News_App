@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">News App</string>
+
+    <string name="article_s_image">article\'s image</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="source">Source</string>
+    <string name="time_not_present">Time_not_present</string>
+    <string name="retry">retry</string>
+    <string name="day">Day</string>
+</resources>
