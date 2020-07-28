@@ -5,7 +5,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
-import com.example.newsapp.paging3.UiModel
 
 class NewsAdapter: PagingDataAdapter<UiModel,RecyclerView.ViewHolder>(DiffUtilCallback){
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -36,14 +35,22 @@ class NewsAdapter: PagingDataAdapter<UiModel,RecyclerView.ViewHolder>(DiffUtilCa
 
     }
 
+
+
 }
 
 object DiffUtilCallback :DiffUtil.ItemCallback<UiModel>(){
     override fun areItemsTheSame(oldItem: UiModel, newItem: UiModel): Boolean {
+        if(oldItem is UiModel.SeparatorItem && newItem is UiModel.SeparatorItem){
+            return oldItem.description == newItem.description
+        }
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: UiModel, newItem: UiModel): Boolean {
+        if(oldItem is UiModel.SeparatorItem && newItem is UiModel.SeparatorItem){
+            return oldItem.description == newItem.description
+        }
         return (oldItem is UiModel.ArticleItem && newItem is UiModel.ArticleItem
                 && oldItem.article.urlToImage == newItem.article.urlToImage
                 && oldItem.article.author == newItem.article.author

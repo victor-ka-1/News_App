@@ -12,9 +12,12 @@ interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(articles:List<Article>)
 
-    @Query("SELECT * FROM articles WHERE publishedAt LIKE :date ORDER BY publishedAt DESC")
-    fun getNewsUntilDate(date:String): PagingSource<Int, Article>
+
+    @Query("SELECT * FROM articles  ORDER BY publishedAt DESC")
+    fun getNewsUntilDate(): PagingSource<Int, Article>
 
     @Query("DELETE FROM articles")
     suspend fun clearArticles()
+
+
 }

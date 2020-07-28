@@ -7,4 +7,5 @@
     <color name="colorBackground">#fff</color>
     <color name="colorTextTitle">#000</color>
     <color name="colorTextSubTitle">#888</color>
+    <color name="colorSeparator">#c8fee3</color>
 </resources>

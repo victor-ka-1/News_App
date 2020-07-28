@@ -18,40 +18,47 @@ private const val NEWS_STARTING_PAGE_INDEX = 1
 @OptIn(ExperimentalPagingApi::class)
 class NewsRemoteMediator (
     private val query:String,
-    private val date :String,
+    private val toDate :String,
+    private val fromDate :String,
     private val apiService: NewsApiService,
     private val newsDataBase: NewsDataBase
 ) : RemoteMediator<Int, Article>(){
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Article>): MediatorResult {
         val page:Int = when(loadType){
             LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: NEWS_STARTING_PAGE_INDEX
+//                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+//                remoteKeys?.nextKey?.minus(1) ?: NEWS_STARTING_PAGE_INDEX
+                NEWS_STARTING_PAGE_INDEX
             }
-            LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
-                if (remoteKeys == null) {
-                    // The LoadType is PREPEND so some data was loaded before,
-                    // so we should have been able to get remote keys
-                    // If the remoteKeys are null, then we're an invalid state and we have a bug
-                    throw InvalidObjectException("Remote key and the prevKey should not be null")
-                }
-                // If the previous key is null, then we can't request more data
-                 remoteKeys.previousKey ?: return MediatorResult.Success(endOfPaginationReached = true)
-                remoteKeys.previousKey
+            LoadType.PREPEND ->{
+//                val remoteKeys = getRemoteKeyForFirstItem(state)
+//                if (remoteKeys == null) {
+//                    // The LoadType is PREPEND so some data was loaded before,
+//                    // so we should have been able to get remote keys
+//                    // If the remoteKeys are null, then we're an invalid state and we have a bug
+//                    throw InvalidObjectException("Remote key and the prevKey should not be null")
+//                }
+//                // If the previous key is null, then we can't request more data
+//                 remoteKeys.previousKey ?:
+                 return MediatorResult.Success(endOfPaginationReached = true)
+            //    remoteKeys.previousKey
             }
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state)
-                if(remoteKeys?.nextKey == null){
-                    throw InvalidObjectException("Remote key should not be null for $loadType")
+                if (remoteKeys == null){
+                    NEWS_STARTING_PAGE_INDEX + 1
+                }else {
+                    if (remoteKeys.nextKey == null) {
+                        throw InvalidObjectException("Remote key should not be null for $loadType")
+                    }
+                    remoteKeys.nextKey
                 }
-                remoteKeys.nextKey
             }
         }
-        val time = date
+
         try {
             val apiResponse =
-                apiService.getNewsFor(q = query, fromTime = time, toTime = time,page =page, pageSize = 10)
+                apiService.getNewsFor(q = query, fromTime = fromDate, toTime = toDate,page =page, pageSize = 20)
             val articles = apiResponse.body()?.articles ?: emptyList()
             val endOfPaginationReached = articles.isEmpty()
             newsDataBase.withTransaction {
@@ -60,7 +67,7 @@ class NewsRemoteMediator (
                     newsDataBase.remoteKeysDao().clearRemoteKeys()
                     newsDataBase.articleDao().clearArticles()
                 }
-                val previousKey = if( page == NEWS_STARTING_PAGE_INDEX) null else (page - 1)
+                val previousKey = null /*if( page == NEWS_STARTING_PAGE_INDEX) null else (page - 1)*/
                 val nextKey = if(endOfPaginationReached) null else (page + 1)
                 val keys = articles.map {
                     RemoteKeys(articleUrl = it.url,previousKey = previousKey, nextKey = nextKey)

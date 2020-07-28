@@ -5,7 +5,7 @@ import com.example.newsapp.api.NewsApiClient
 import com.example.newsapp.api.NewsApiService
 import com.example.newsapp.db.NewsDataBase
 import com.example.newsapp.paging3.NewsRepository
-import com.example.newsapp.paging3.NewsViewModel
+import com.example.newsapp.ui.NewsViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -18,7 +18,7 @@ val roomDBmodule = module {
 }
 
 val viewModelModule = module {
-    viewModel { NewsViewModel( repository = get() ) }
+    viewModel { NewsViewModel(repository = get()) }
 }
 
 val appModule = module {

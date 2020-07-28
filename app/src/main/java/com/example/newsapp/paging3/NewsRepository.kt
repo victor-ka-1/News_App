@@ -5,8 +5,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.newsapp.api.Article
 import com.example.newsapp.api.NewsApiService
+import com.example.newsapp.api.Source
 import com.example.newsapp.db.NewsDataBase
+import com.example.newsapp.db.RemoteKeys
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 class NewsRepository(private val apiService: NewsApiService,
                      private val newsDataBase: NewsDataBase){
@@ -14,27 +17,36 @@ class NewsRepository(private val apiService: NewsApiService,
         private const val NETWORK_PAGE_SIZE=10
     }
 
-//    fun getRequestResultStream( query:String ) : Flow<PagingData<Article>>{
-//        return Pager(
-//            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
-//            pagingSourceFactory = { NewsPagingSource(apiService, query=query) }
-//        ).flow
-//    }
-
-
-
     fun getNewsUntilDateStream(query:String, date:String) : Flow<PagingData<Article>> {
-        val pagingSourceFactory = { newsDataBase.articleDao().getNewsUntilDate(date) }
+        val pagingSourceFactory = { newsDataBase.articleDao().getNewsUntilDate() }
 
         return Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
             remoteMediator =NewsRemoteMediator(
-                query,
-                date,
-                apiService,
-                newsDataBase),
+                query = query,
+                fromDate = calculateDate(),
+                toDate = formatToString( Calendar.getInstance() ),
+                apiService = apiService,
+                newsDataBase = newsDataBase),
             pagingSourceFactory = pagingSourceFactory
         ).flow
     }
 
+    private fun calculateDate(): String {
+        val dayOffset = 24 * 60 * 60 * 1000 * 7 //7 days in millis
+        val myDate = Calendar.getInstance()
+        myDate.timeInMillis = (myDate.timeInMillis - dayOffset)
+        return formatToString(myDate)
+    }
+    fun formatToString(myDate:Calendar): String {
+        val year = myDate.get(Calendar.YEAR)
+        val month = myDate.get(Calendar.MONTH)+1
+        val day_of_month = myDate.get(Calendar.DAY_OF_MONTH)
+
+        val monthString =if(month <10) "0${month}" else month.toString()
+        val dayMonthString = if(day_of_month < 10) "0${day_of_month}" else day_of_month.toString()
+
+        val dateString =  "${year}-${monthString}-${dayMonthString}"
+        return dateString
+    }
 }

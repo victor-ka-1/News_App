@@ -1,5 +1,6 @@
 package com.example.newsapp.ui
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,23 @@ import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
 class NewsViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
     fun bind(article: Article){
-        Glide.with(view.context)
-            .load(article.urlToImage)
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-            .placeholder(android.R.drawable.ic_menu_gallery)
-            .into(view.iv_article)
+        if(article.urlToImage != null){
+            Glide.with(view.context)
+                .load(article.urlToImage)
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(view.iv_article)
+        } else{
+            Glide.with(view.context)
+                .load(R.drawable.ic_no_photo)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(view.iv_article)
+        }
+
 
         view.tv_title.text = article.title
         view.tv_description.text = article.description
-        view.tv_time_item.text = article.publishedAt
+        view.tv_time_item.text = article.publishedAt.replace("-",".").replace("T","  ").replace("Z","")
         view.tv_source.text = article.source.name
 
 //        view.tv_source.setOnClickListener {
