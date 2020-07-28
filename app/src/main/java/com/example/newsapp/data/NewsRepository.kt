@@ -1,13 +1,11 @@
-package com.example.newsapp.paging3
+package com.example.newsapp.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.newsapp.api.Article
+import com.example.newsapp.models.Article
 import com.example.newsapp.api.NewsApiService
-import com.example.newsapp.api.Source
 import com.example.newsapp.db.NewsDataBase
-import com.example.newsapp.db.RemoteKeys
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 

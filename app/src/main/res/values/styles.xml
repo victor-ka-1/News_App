@@ -7,4 +7,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Source_text" parent="TextAppearance.MaterialComponents.Subtitle2">
+    </style>
 </resources>

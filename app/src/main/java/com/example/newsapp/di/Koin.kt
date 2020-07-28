@@ -4,7 +4,7 @@ import androidx.room.Room
 import com.example.newsapp.api.NewsApiClient
 import com.example.newsapp.api.NewsApiService
 import com.example.newsapp.db.NewsDataBase
-import com.example.newsapp.paging3.NewsRepository
+import com.example.newsapp.data.NewsRepository
 import com.example.newsapp.ui.NewsViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel

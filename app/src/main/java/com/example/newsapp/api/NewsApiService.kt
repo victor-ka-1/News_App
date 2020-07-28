@@ -1,5 +1,6 @@
 package com.example.newsapp.api
 
+import com.example.newsapp.models.News
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

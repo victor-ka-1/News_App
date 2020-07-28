@@ -1,6 +1,9 @@
 package com.example.newsapp.ui
 
-import android.graphics.drawable.Drawable
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.newsapp.R
-import com.example.newsapp.api.Article
+import com.example.newsapp.models.Article
 import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
 class NewsViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
@@ -29,15 +32,25 @@ class NewsViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
 
         view.tv_title.text = article.title
         view.tv_description.text = article.description
+
+        view.tv_description.apply {
+            setEllipsizedSuffixWithLink(3, "Show More", article.url)
+
+            linksClickable = true
+            movementMethod = LinkMovementMethod.getInstance()
+            setLinkTextColor(Color.BLUE)
+        }
+
+
         view.tv_time_item.text = article.publishedAt.replace("-",".").replace("T","  ").replace("Z","")
         view.tv_source.text = article.source.name
 
-//        view.tv_source.setOnClickListener {
-//            article.url.let {url ->
-//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//                view.context.startActivity(intent)
-//            }
-//        }
+        view.tv_source.setOnClickListener {
+            article.url.let {url ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                view.context.startActivity(intent)
+            }
+        }
     }
 
     companion object{

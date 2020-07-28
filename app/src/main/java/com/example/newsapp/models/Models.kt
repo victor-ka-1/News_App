@@ -1,4 +1,4 @@
-package com.example.newsapp.api
+package com.example.newsapp.models
 
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -22,7 +22,7 @@ data class Source(
 data class Article(
     @SerializedName("source") @Expose
     @Embedded
-    val source :Source,
+    val source : Source,
     @SerializedName("author") @Expose val author: String?,
     @SerializedName("title") @Expose val title: String,
     @SerializedName("description") @Expose val description: String,

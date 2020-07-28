@@ -3,8 +3,8 @@ package com.example.newsapp.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.example.newsapp.api.Article
-import com.example.newsapp.paging3.NewsRepository
+import com.example.newsapp.models.Article
+import com.example.newsapp.data.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat

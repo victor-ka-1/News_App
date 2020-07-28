@@ -1,9 +1,13 @@
 package com.example.newsapp.ui
 
+import android.graphics.Paint
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.StringUtil
 import com.example.newsapp.R
 
 class NewsAdapter: PagingDataAdapter<UiModel,RecyclerView.ViewHolder>(DiffUtilCallback){
@@ -59,4 +63,6 @@ object DiffUtilCallback :DiffUtil.ItemCallback<UiModel>(){
                 || (oldItem is UiModel.SeparatorItem && newItem is UiModel.SeparatorItem
                 && oldItem.description == newItem.description)
     }
+
+
 }

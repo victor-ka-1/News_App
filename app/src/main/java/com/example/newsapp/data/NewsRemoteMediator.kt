@@ -1,11 +1,11 @@
-package com.example.newsapp.paging3
+package com.example.newsapp.data
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.newsapp.api.Article
+import com.example.newsapp.models.Article
 import com.example.newsapp.api.NewsApiService
 import com.example.newsapp.db.NewsDataBase
 import com.example.newsapp.db.RemoteKeys
@@ -41,7 +41,6 @@ class NewsRemoteMediator (
 //                // If the previous key is null, then we can't request more data
 //                 remoteKeys.previousKey ?:
                  return MediatorResult.Success(endOfPaginationReached = true)
-            //    remoteKeys.previousKey
             }
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state)

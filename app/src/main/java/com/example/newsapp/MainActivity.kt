@@ -4,23 +4,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.ui.NewsAdapter
 import com.example.newsapp.ui.NewsLoadStateAdapter
 import com.example.newsapp.ui.NewsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
@@ -40,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         val query = "belarus"
         requestNews(query)
+
 
         swipeToRefreshLayout.setOnRefreshListener {
             myAdapter.refresh()
@@ -89,17 +87,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = myAdapter.withLoadStateFooter( footer = NewsLoadStateAdapter{ myAdapter.retry() })
     }
 
-    @OptIn(FlowPreview::class)
-    private fun initRequest(query: String){
-        lifecycleScope.launch {
-            myAdapter.loadStateFlow
-                // Only emit when REFRESH LoadState for RemoteMediator changes.
-                .distinctUntilChangedBy {  it.refresh}
-                .filter { it.refresh is LoadState.NotLoading }
-                // Only react to cases where Remote REFRESH completes i.e., NotLoading.
-                .collect{ recyclerView.scrollToPosition(0)}
-        }
-    }
 
     private fun requestNews(query:String){
         requestJob?.cancel()

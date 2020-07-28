@@ -44,30 +44,39 @@
                 android:text="@string/description"
                 android:textSize="14sp"
                 android:ellipsize="end"
+                android:hyphenationFrequency="full"
                 android:layout_below="@+id/tv_title"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="5dp"
                 android:maxLines="3"
                 />
-
+<!--            <TextView-->
+<!--                android:id="@+id/tv_description"-->
+<!--                android:text="@string/description"-->
+<!--                android:textSize="14sp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/tv_title"-->
+<!--                android:ellipsize="end"-->
+<!--                android:minLines="1"-->
+<!--                android:maxLines="3"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_marginTop="5dp"/>-->
             <TextView
                 android:id="@+id/tv_source"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_description"
-                android:layout_toStartOf="@id/tv_time_item"
-                android:layout_alignParentStart="true"
                 android:text="@string/source"
-                style="@style/Source_text"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:gravity="start"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:maxLines="1"
                 android:singleLine="true"
-
                 android:ellipsize="end"/>
             <TextView
                 android:id="@+id/tv_time_item"
