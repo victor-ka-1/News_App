@@ -15,7 +15,7 @@ class NewsRepository(private val apiService: NewsApiService,
         private const val NETWORK_PAGE_SIZE=10
     }
 
-    fun getNewsUntilDateStream(query:String, date:String) : Flow<PagingData<Article>> {
+    fun getNewsUntilDateStream(query:String) : Flow<PagingData<Article>> {
         val pagingSourceFactory = { newsDataBase.articleDao().getNewsUntilDate() }
 
         return Pager(

@@ -47,7 +47,7 @@ class NewsViewModel (private val repository: NewsRepository) : ViewModel(){
 
     }
 
-    fun getNewsFor(queryString:String, date :String): Flow<PagingData<UiModel>> {
+    fun getNewsFor(queryString:String): Flow<PagingData<UiModel>> {
         val lastResult = currentNewsResult
         if(queryString == currentQueryValue && lastResult != null){
             return lastResult
@@ -56,7 +56,7 @@ class NewsViewModel (private val repository: NewsRepository) : ViewModel(){
         currentQueryValue = queryString
 
 
-        currentResultWithoutSeparators = repository.getNewsUntilDateStream(queryString, date)
+        currentResultWithoutSeparators = repository.getNewsUntilDateStream(queryString)
              .map { pagingData: PagingData<Article> -> pagingData.map {
                  UiModel.ArticleItem(
                      it

@@ -5,10 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.newsapp.models.Article
 import com.example.newsapp.api.NewsApiService
 import com.example.newsapp.db.NewsDataBase
 import com.example.newsapp.db.RemoteKeys
+import com.example.newsapp.models.Article
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
