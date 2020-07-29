@@ -4,7 +4,7 @@ App, which shows news from https://newsapi.org/ for last 7 days.
 
 Project, written in Kotlin using Paging 3. Downloaded news are caching in database. 
 
-This api requiers query parameter for requesting news. By default it set as "belarus", so there will be presented news about belarus. To change it, change const val QUERY_FOR_NEWS.
+Used api requiers query parameter for requesting news. By default it set as "belarus", so there will be presented news about belarus. To change it, change const val QUERY_FOR_NEWS.
 
  Free version of this api is limited, and brcause of it, if there are a lot of news, you can't scroll down to 6th or 7th day because server does not send data and response with:
 {"status":"error","code":"maximumResultsReached","message":"You have requested too many results. 
