@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
+import com.example.newsapp.api.NewsApiClient.Companion.QUERY_FOR_NEWS
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-const val QUERY_FOR_NEWS="belarus"
+
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity() {

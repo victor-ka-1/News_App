@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit
 
 class NewsApiClient {
     companion object {
+        const val QUERY_FOR_NEWS="belarus"
         private const val BASE_URL="https://newsapi.org/v2/"
         private const val apiKeyHeader = "x-api-key"
         private const val apiKey = "1a969e59c42f4412a7a965c3331d4eb8"

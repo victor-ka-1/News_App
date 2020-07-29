@@ -8,4 +8,5 @@
     <color name="colorTextTitle">#000</color>
     <color name="colorTextSubTitle">#888</color>
     <color name="colorSeparator">#c8fee3</color>
+    <color name="actionButtonColor">#FFA500</color>
 </resources>

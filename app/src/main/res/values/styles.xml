@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -9,4 +9,8 @@
 
     <style name="Source_text" parent="TextAppearance.MaterialComponents.Subtitle2">
     </style>
+    <style name="ScrollFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/actionButtonColor</item>
+    </style>
+
 </resources>
