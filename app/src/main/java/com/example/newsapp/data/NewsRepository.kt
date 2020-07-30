@@ -12,7 +12,7 @@ import java.util.*
 class NewsRepository(private val apiService: NewsApiService,
                      private val newsDataBase: NewsDataBase){
     companion object{
-        private const val NETWORK_PAGE_SIZE=10
+        private const val NETWORK_PAGE_SIZE=20
     }
 
     fun getNewsUntilDateStream(query:String) : Flow<PagingData<Article>> {

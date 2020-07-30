@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
 
         requestNews(QUERY_FOR_NEWS)
 
-
         swipeToRefreshLayout.setOnRefreshListener {
             myAdapter.refresh()
         }

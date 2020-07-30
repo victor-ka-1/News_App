@@ -9,6 +9,10 @@ import com.example.newsapp.api.NewsApiService
 import com.example.newsapp.db.NewsDataBase
 import com.example.newsapp.db.RemoteKeys
 import com.example.newsapp.models.Article
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.single
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
@@ -26,32 +30,26 @@ class NewsRemoteMediator (
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Article>): MediatorResult {
         val page:Int = when(loadType){
             LoadType.REFRESH -> {
-//                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-//                remoteKeys?.nextKey?.minus(1) ?: NEWS_STARTING_PAGE_INDEX
-                NEWS_STARTING_PAGE_INDEX
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                remoteKeys?.nextKey?.minus(1) ?: NEWS_STARTING_PAGE_INDEX
             }
             LoadType.PREPEND ->{
-//                val remoteKeys = getRemoteKeyForFirstItem(state)
-//                if (remoteKeys == null) {
-//                    // The LoadType is PREPEND so some data was loaded before,
-//                    // so we should have been able to get remote keys
-//                    // If the remoteKeys are null, then we're an invalid state and we have a bug
-//                    throw InvalidObjectException("Remote key and the prevKey should not be null")
-//                }
-//                // If the previous key is null, then we can't request more data
-//                 remoteKeys.previousKey ?:
-                 return MediatorResult.Success(endOfPaginationReached = true)
+                val remoteKeys = flowOf(getRemoteKeyForFirstItem(state)).flowOn(Dispatchers.IO).single()
+                    ?:(
+                            // The LoadType is PREPEND so some data was loaded before,
+                            // so we should have been able to get remote keys
+                            // If the remoteKeys are null, then we're an invalid state and we have a bug
+                            throw InvalidObjectException("Remote key and the prevKey should not be null")
+                            )
+                // If the previous key is null, then we can't request more data
+                 remoteKeys.previousKey ?: return MediatorResult.Success(endOfPaginationReached = true)
             }
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state)
-                if (remoteKeys == null){
-                    NEWS_STARTING_PAGE_INDEX + 1
-                }else {
-                    if (remoteKeys.nextKey == null) {
+                if (remoteKeys?.nextKey == null) {
                         throw InvalidObjectException("Remote key should not be null for $loadType")
                     }
-                    remoteKeys.nextKey
-                }
+                remoteKeys.nextKey
             }
         }
 
@@ -66,7 +64,7 @@ class NewsRemoteMediator (
                     newsDataBase.remoteKeysDao().clearRemoteKeys()
                     newsDataBase.articleDao().clearArticles()
                 }
-                val previousKey = null /*if( page == NEWS_STARTING_PAGE_INDEX) null else (page - 1)*/
+                val previousKey = if( page == NEWS_STARTING_PAGE_INDEX) null else (page - 1)
                 val nextKey = if(endOfPaginationReached) null else (page + 1)
                 val keys = articles.map {
                     RemoteKeys(articleUrl = it.url,previousKey = previousKey, nextKey = nextKey)
