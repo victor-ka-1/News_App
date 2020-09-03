@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         myAdapter.addDataRefreshListener {
+
             swipeToRefreshLayout.isRefreshing = false
             recyclerView.scrollToPosition(0)
         }
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                 requestJob = lifecycleScope.launch {
                      myViewModel.filterShowedNews(text).collectLatest {
                         myAdapter.submitData(it)
+
                     }
                 }
                 return false

@@ -16,6 +16,10 @@ import kotlinx.coroutines.flow.single
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
+import java.util.concurrent.atomic.AtomicInteger
+
+val tempDebugInt = AtomicInteger(0)
+
 
 private const val NEWS_STARTING_PAGE_INDEX = 1
 
@@ -55,7 +59,8 @@ class NewsRemoteMediator (
 
         try {
             val apiResponse =
-                apiService.getNewsFor(q = query, fromTime = fromDate, toTime = toDate,page =page, pageSize = 20)
+                apiService.getNewsFor(q = query, fromTime = fromDate, toTime = toDate,page =page, pageSize = state.config.pageSize)
+            tempDebugInt.incrementAndGet()
             val articles = apiResponse.body()?.articles ?: emptyList()
             val endOfPaginationReached = articles.isEmpty()
             newsDataBase.withTransaction {
